@@ -1,4 +1,4 @@
-# Transcriptic RabbitMQ Image Rotation Challenge
+# RabbitMQ Image Rotation
 
 This is the implementation on the requirements from Transcriptic RabbitMQ Image Rotation Challenge.
 
