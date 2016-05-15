@@ -1,0 +1,11 @@
+<project name="Amazon S3 Upload" default="run" basedir=".">
+    <path id="aws.java.sdk.classpath">
+        <fileset dir="lib/" includes="**/*.jar"/>
+        <pathelement location="."/>
+    </path>
+
+    <target name="run">
+        <javac srcdir="." destdir="." classpathref="aws.java.sdk.classpath"/>
+        <java classname="S3Upload" classpathref="aws.java.sdk.classpath" fork="true"/>
+    </target>
+</project>
