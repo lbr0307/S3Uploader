@@ -1,4 +1,3 @@
-# S3Uploader
 # Transcriptic RabbitMQ Image Rotation Challenge
 
 This is the implementation on the requirements from Transcriptic RabbitMQ Image Rotation Challenge.
@@ -32,7 +31,7 @@ This is the implementation on the requirements from Transcriptic RabbitMQ Image 
     	* Decode Base64 string into png file
     	* Rotate png file by any degrees
 
-## Running the Sample
+## Running the Project
 
 The basic steps for running this project are:
 
@@ -42,16 +41,31 @@ The basic steps for running this project are:
 	$ sbin/rabbitmq-server
 	```
 
-2. :
+2. Cd to project folder
 
-  ```
-  [default]
-  aws_access_key_id =
-  aws_secret_access_key =
-  ```
+	2.1. Open a terminal and start S3 Uploader:
 
-3.  Save the file.
+	```
+	$ ant
+	```
 
-4.  Run the `S3Sample.java` file, located in the same directory as the properties file. The sample prints information to the standard output.
+	2.2. Open a terminal and compile Publisher and Callback Receiver:
 
-**NOTE:** The sample also includes an Ant build.xml file to run the sample.
+	```
+	$ javac -cp .:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar Publisher.java CallbackReceiver.java
+	$ export CP=.:lib/commons-io-1.2.jar:lib/commons-cli-1.1.jar:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar 
+
+	2.3 Start Callback Receiver:
+
+	```
+	$ java -cp $CP CallbackReceiver
+	```
+
+
+	2.4 Start Publisher and send png image "result.png" using rounting key "UploadS3":
+
+	```
+	$ java -cp $CP Publisher "UploadS3" "result.png"
+	```
+
+**NOTE:** The project also includes an Ant build.xml file to run the sample.
