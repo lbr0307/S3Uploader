@@ -79,25 +79,9 @@ The basic steps for running this project are:
 
 	* SERVER ERROR: since it can be related to the network condition and unpredicted error in the S3 side, so we will try again in exponential backoff manner. If we still get error (either CLIENT ERROR or SERVER ERROR) after fininshing the retries, we save the failing images to local directory.
 
-	* For further development, I wanna use `getErrorCode()` method of the `AmazonServiceException` or `AmazonClientException` to make a finer categorization than just categorize the error into to classes. By applying this finer categorization, we can give more specific responses. Currently, we just print out the error codes to the command when it occurs. [AWS ERROR CODES](http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html)
+	* For further development, I wanna use `getErrorCode()` method of the `AmazonServiceException` or `AmazonClientException` to make a finer categorization than just categorize the error into to classes. By applying this finer categorization, we can give more specific responses. Currently, we just print out the error codes to the command when error occur. [AWS ERROR CODES](http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* Scalability: if the scenario is low concurrency and long uploading duration, we can spawn a thread for a uploading. However, I use a thread pool of small size (size = 5, in my case), I think using a small size thread pool has at least 2 benefits:
+	* When the concurrency is low, using thread pool is the same as spawning threads
+	* If the concurrency becomes higher suddenly (which is rare), using a thread pool could effectively reduce the overhead time for creating thread every time
+	* Since the size of my thread pool is small, I don't waste too much resources when the concurrency is low
