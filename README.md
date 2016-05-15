@@ -1,4 +1,4 @@
-# RabbitMQ Image Rotation
+# PNG Exchange
 
 This is the implementation on the requirements from Transcriptic RabbitMQ Image Rotation Challenge.
 
@@ -55,7 +55,7 @@ The basic steps for running this project are:
 	$ javac -cp .:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar Publisher.java CallbackReceiver.java
 	$ export CP=.:lib/commons-io-1.2.jar:lib/commons-cli-1.1.jar:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar
 	```
-	
+
 	2.3 Start Callback Receiver:
 
 	```
@@ -70,3 +70,34 @@ The basic steps for running this project are:
 	```
 
 **NOTE:** The project also includes an Ant build.xml file to run the sample.
+
+## Design Thoughts
+
+* Fault tolerance: I categorize upload fault into 2 categories: CLIENT ERROR and SERVER ERROR, and treat them differently.
+
+	* CLIENT ERROR: since it is related to the client, has little to do with the network, trying again seems meaningless, we directly save the failing images to local directory;
+
+	* SERVER ERROR: since it can be related to the network condition and unpredicted error in the S3 side, so we will try again in exponential backoff manner. If we still get error (either CLIENT ERROR or SERVER ERROR) after fininshing the retries, we save the failing images to local directory.
+
+	* For further development, I wanna use `getErrorCode()` method of the `AmazonServiceException` or `AmazonClientException` to make a finer categorization than just categorize the error into to classes. By applying this finer categorization, we can give more specific responses. Currently, we just print out the error codes to the command when it occurs. [AWS ERROR CODES](http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
