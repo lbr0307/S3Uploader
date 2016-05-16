@@ -43,29 +43,30 @@ The basic steps for running this project are:
 
 2. Cd to project folder
 
-	2.1. Open a terminal and start S3 Uploader:
+	2.1. Open a terminal A and start S3 Uploader:
 
 	```
 	$ ant
 	```
 
-	2.2. Open a terminal and compile Publisher and Callback Receiver:
+	2.2. Open a terminal B and compile Publisher and Callback Receiver:
 
 	```
 	$ javac -cp .:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar Publisher.java CallbackReceiver.java
 	$ export CP=.:lib/commons-io-1.2.jar:lib/commons-cli-1.1.jar:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar
 	```
 
-	2.3 Start Callback Receiver:
+	2.3 Start Callback Receiver in terminal B:
 
 	```
 	$ java -cp $CP CallbackReceiver
 	```
 
 
-	2.4 Start Publisher and send png image "result.png" using rounting key "UploadS3":
+	2.4 Open a terminal C and start Publisher and send png image "result.png" using rounting key "UploadS3":
 
 	```
+	$ export CP=.:lib/commons-io-1.2.jar:lib/commons-cli-1.1.jar:lib/rabbitmq-client.jar:lib/json-simple-1.1.jar
 	$ java -cp $CP Publisher "UploadS3" "result.png"
 	```
 
@@ -85,3 +86,4 @@ The basic steps for running this project are:
 	* When the concurrency is low, using thread pool is the same as spawning threads
 	* If the concurrency becomes higher suddenly (which is rare), using a thread pool could effectively reduce the overhead time for creating thread every time
 	* Since the size of my thread pool is small, I don't waste too much resources when the concurrency is low
+
